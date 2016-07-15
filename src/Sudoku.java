@@ -120,79 +120,74 @@ public class Sudoku {
 	            }
 	        }
 	    }
-	    public int[][] initializeGrid(int userGrid[][],int grid[][])
-		{
-			for(int i=0; i<9; i++)
-			{
-				for(int j=0; j<9; j++)
-					userGrid[i][j] = grid[i][j];
-			}
-			return userGrid;
-		}
 	    
-	    void generateGame(int difficulty, int userGrid [][])
+	    /*This function counts the number of solution a given puzzle can have.*/
+	    int countSolution(int grid[][], int count)
 	    {
-	    	//When user has chosen Easy difficulty
-	    	if(difficulty == 1)
-	    	{
-	    		for(int i=0; i<40; i++)
-	    		{
-	    			int a=0,b=0;
-	    			do
-	    			{
-	    				a = (int)(Math.random() * 9);
-	    				b = (int)(Math.random() * 9);
-	    				if(userGrid[a][b] !=0)
-	    				{
-	    					userGrid[a][b] = 0;
-	    					break;
-	    				}
-	    				else
-	    					continue;
-	    			}while(true);
-	    		}
-	    	}
-	    	//When user has chosen medium difficulty
-	    	else if(difficulty == 2)
-	    	{
-	    		for(int i=0; i<45; i++)
-	    		{
-	    			int a=0,b=0;
-	    			do
-	    			{
-	    				a = (int)(Math.random() * 9);
-	    				b = (int)(Math.random() * 9);
-	    				if(userGrid[a][b] !=0)
-	    				{
-	    					userGrid[a][b] = 0;
-	    					break;
-	    				}
-	    				else
-	    					continue;
-	    			}while(true);
-	    		}
-	    	}
-	    	//When user has chosen Hard difficulty
-	    	else if(difficulty == 3)
-	    	{
-	    		for(int i=0; i<50; i++)
-	    		{
-	    			int a=0,b=0;
-	    			do
-	    			{
-	    				a = (int)(Math.random() * 9);
-	    				b = (int)(Math.random() * 9);
-	    				if(userGrid[a][b] !=0)
-	    				{
-	    					userGrid[a][b] = 0;
-	    					break;
-	    				}
-	    				else
-	    					continue;
-	    			}while(true);
-	    		}
-	    	}
-	    	printGrid(userGrid);
+	        int row = 0, col = 0, flag = 0;
+	        
+	        for(row=0; row<N; row++)  //The following nested loop checks for the first empty box in the puzzle.
+	        {
+	            for(col=0; col<N; col++)
+	            {
+	                if( grid[row][col] == 0 ) 
+	                {
+	                    flag = 1;
+	                    break;
+	                }
+	            }
+	            if( flag==1 )
+	                break;
+	        }
+	        
+	        if( flag==0 )   //Base case for recursion( Returns true when there is no empty position left )
+	            return count+1;
+	            
+	        for(int num = 1; num<=9; num++)
+	        {
+	            if( isSafe(grid, row, col, num) )
+	            {
+	                grid[row][col] = num;
+	                count = countSolution(grid, count);
+	            }
+	            grid[row][col] = 0;
+	        }
+	        
+	        return count;
+	    }
+	    
+	    /*The following function delete's some random numbers from the sudoku such that the solution of the sudoku remains unique*/
+	    void sudokuGenerator(int grid[][], int difficulty)
+	    {
+	        int num;
+	        if( difficulty==1 )                 // If the difficulty of the required puzzle is 1 than
+	            num = 4;                        // we will delete 4 elements from each row.
+	        else if( difficulty==2 )            // If the difficulty of the required puzzle is 2 than
+	            num = 5;                        // we will delete 5 elements from each row.
+	        else                                // If the difficulty of the required puzzle is 3 than
+	            num = 6;                        // we will delete 6 elements from each row.
+	        
+	        
+	        for(int i=0; i<9; i++)
+	        {
+	            for(int j=0; j<num; j++)      // This loop help's us in removing random elements from each row
+	            {
+	                while( true )
+	                {
+	                    int a = (int)(Math.random() * 9);
+	                    int b = grid[i][a];
+	                    
+	                    if( b!=0 )          // If the number is not already deleted than we will proceed in this if statement
+	                    {
+	                        grid[i][a] = 0;
+	                        if( countSolution(grid, 0)==1 )     //If the number of ways in which the Sudoku can be solved remains 1 than we break out of the loop.
+	                            break;
+	                            
+	                        grid[i][a] = b;
+	                    }
+	                }
+	            }
+	        }
 	    }
 	    
 }
