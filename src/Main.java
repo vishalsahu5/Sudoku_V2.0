@@ -1,12 +1,14 @@
-import java.util.*;
-import java.io.*;
+import javax.swing.*;
+import javax.swing.border.*;
+import java.awt.*;
+import java.awt.event.*;
 
-public class Main
+public class Main 
 {
-    public static void main(String[] args) throws IOException
-    {
-        // 0 means unassigned cells
-        Main g = new Main();
+	public static void main(String []args)
+	{
+		Main g = new Main();
+		
 		int[][] grid = new int[][] {
                           {0, 0, 0, 0, 0, 0, 0, 0, 0},
                           {0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -17,38 +19,37 @@ public class Main
                           {0, 0, 0, 0, 0, 0, 0, 0, 0},
                           {0, 0, 0, 0, 0, 0, 0, 0, 0},
                           {0, 0, 0, 0, 0, 0, 0, 0, 0}};
-					
+						  
 		int difficulty = 1;
 		
-		g.createSudoku(grid);                //Adds 9 random elements to the grid.
-		g.solveSudoku(grid);                 //Solves the grid using backtracking created above.
-		g.sudokuGenerator(grid, difficulty); //Removes some elements from the completely solved grid, such that the sudoku always results in an unique solution.
+		g.createSudoku(grid);					//Adds 9 random elements to the grid.
+		g.solveSudoku(grid);					//Solves the grid using backtracking created above.
+		g.sudokuGenerator(grid, difficulty);			//Removes some elements from the completely solved grid, such that the sudoku always results in an unique solution.
 		
-		/*Code for GUI starts from here.*/
-		JFrame frame = new JFrame("Sudoku Prototype");  //Creates a new JFrame with the title "Sudoku Prototype".
-		JPanel p = new JPanel();                        //Creates a JPanel, on which we will add all our components.
-		JTextField[] box = new JTextField[81];          //81 JTextField's, one for each element. 
+		JFrame frame = new JFrame("Sudoku Prototype");		//Creates a new JFrame with the title "Sudoku Prototype".
+		JPanel p = new JPanel();				//Creates a JPanel, on which we will add all our components.
+		JTextField[] box = new JTextField[81];			//81 JTextField's, one for each element. 
 		
-		p.setBackground(Color.WHITE);                   //Set's the background color to white.
-		p.setLayout(null);                              //We are not using any predefined Layout.
+		p.setBackground(Color.WHITE);				//Set's the background color to white.
+		p.setLayout(null);					//We are not using any predefined Layout.
 		
-		int row = 1;                                    //This variable help's us to add a horizontal gap after every 3 lines.
-		for(int i=0; i<81; i++)                         //A loop to traverse through all the 81 boxes in the grid.
+		int row = 1;						//This variable help's us to add a horizontal gap after every 3 lines.
+		for(int i=0; i<81; i++)					//This keyListener helps us to restrict the JTextField to numerical values only.
 		{
 			box[i] = new JTextField();
-			box[i].addKeyListener(new KeyAdapter(){     //This keyListener helps us to restrict the JTextField to numerical values only.
+			box[i].addKeyListener(new KeyAdapter(){
 				public void keyTyped(KeyEvent e)
 				{
 					//if( box[i].getText().length() >= 1 )
 						//e.consume();
 					
-					char ch = e.getKeyChar();           //If the value inserted by the user is not an Integer than we will just delete it from the grid.
-					if( !(ch>='0' && ch<='9') )
+					char ch = e.getKeyChar();
+					if( !(ch>='0' && ch<='9') )	//If the value inserted by the user is not an Integer than we will just delete it from the grid.
 						e.consume();
 				}
 			});
 			
-			if( grid[i/9][i%9]!=0 )                     //If the value of Grid is not 0 at that position, than we will show that number on the screen.
+			if( grid[i/9][i%9]!=0 )				//If the value of Grid is not 0 at that position, than we will show that number on the screen.
 			{
 				box[i].setText(" "+grid[i/9][i%9]);
 				box[i].setEditable(false);
@@ -57,15 +58,15 @@ public class Main
 				box[i].setFont(new Font("Tahoma", Font.BOLD, 14));
 			}
 			
-			int w = 0, h = 0;                           //The next 2 if statements will helps us make 9, 3x3 boxes on the board.
-			if( (i+1)%3==0 && i%9!=0 )                  //If we the value of the column is divisble by 3, assgin w by 2.
-				w = 2;                                  //
-			if( row%3==0 )                              //If we the value of the row is divisble by 3, assgin h by 2.
-				h = 2;                                  //
+			int w = 0, h = 0;				//The next 2 if statements will helps us make 9, 3x3 boxes on the board.
+			if( (i+1)%3==0 && i%9!=0 )			//If we the value of the column is divisble by 3, assgin w by 2.		
+				w = 2;
+			if( row%3==0 )					//If we the value of the row is divisble by 3, assgin h by 2.
+				h = 2;
 			box[i].setBounds(50*(i%9)+50, 50*(i/9)+55, 50-w, 50-h);			
 			
-			box[i].setHorizontalAlignment(JTextField.CENTER);			                //This keeps the number added by the user to the centre.
-			Border border = BorderFactory.createMatteBorder(1, 1, 1, 1, Color.BLACK);   // Adds a border.
+			box[i].setHorizontalAlignment(JTextField.CENTER);				//This keeps the number added by the user to the centre.	
+			Border border = BorderFactory.createMatteBorder(1, 1, 1, 1, Color.BLACK);	// Adds a border.
 			box[i].setBorder(border);
 			
 			//box[i].setEditable(false);
@@ -136,5 +137,5 @@ public class Main
 		frame.setResizable(false);
 		frame.setLocationRelativeTo(null);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    }
+	}
 }
