@@ -160,27 +160,40 @@ public class Sudoku {
 	    void sudokuGenerator(int grid[][], int difficulty)
 	    {
 	        int num;
-	        if( difficulty==1 )                 // If the difficulty of the required puzzle is 1 than
-	            num = 4;                        // we will delete 4 elements from each row.
-	        else if( difficulty==2 )            // If the difficulty of the required puzzle is 2 than
-	            num = 5;                        // we will delete 5 elements from each row.
-	        else                                // If the difficulty of the required puzzle is 3 than
-	            num = 6;                        // we will delete 6 elements from each row.
+	       /*
+	        *  If the difficulty of the required puzzle is 1 then we will delete 4 elements from each row.
+	        *  If the difficulty of the required puzzle is 2 then we will delete 5 elements from each row.
+	        *  If the difficulty of the required puzzle is 3 then we will delete 6 elements from each row.
+	        */
+	        if( difficulty==1 )                 
+	            num = 4;                        
+	        else if( difficulty==2 )            
+	            num = 5;                        
+	        else                                
+	            num = 6;                         
 	        
 	        
 	        for(int i=0; i<9; i++)
 	        {
-	            for(int j=0; j<num; j++)      // This loop help's us in removing random elements from each row
+	        	/*
+	        	 * This loop helps us in removing random elements from each row
+	        	 */
+	            for(int j=0; j<num; j++)      
 	            {
 	                while( true )
 	                {
 	                    int a = (int)(Math.random() * 9);
 	                    int b = grid[i][a];
-	                    
-	                    if( b!=0 )          // If the number is not already deleted than we will proceed in this if statement
+	                    /*
+	                     * If the number is not already deleted than we will proceed in this if statement
+	                     */
+	                    if( b!=0 )           
 	                    {
 	                        grid[i][a] = 0;
-	                        if( countSolution(grid, 0)==1 )     //If the number of ways in which the Sudoku can be solved remains 1 than we break out of the loop.
+	                       /*
+	                        * If the number of ways in which the Sudoku can be solved remains 1 than we break out of the loop.
+	                        */
+	                       if( countSolution(grid, 0)==1 )     
 	                            break;
 	                            
 	                        grid[i][a] = b;
