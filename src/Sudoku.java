@@ -1,5 +1,11 @@
+import javax.swing.*;
+import javax.swing.border.*;
+import java.awt.*;
+import java.awt.event.*;
+
 public class Sudoku {
 	 final int N = 9;
+	 JFrame frame = new JFrame("Sudoku Prototype");	//Creates a new JFrame with the title "Sudoku Prototype".
 	    
 	    /*The following function checks if the specified number is present in any other column at the same row position*/ 
 	    public boolean UsedInRow(int grid[][], int row, int num)    
@@ -205,7 +211,7 @@ public class Sudoku {
 	    
 	    void GUI(int difficulty)
 		{
-			Hello1 g = new Hello1();
+			Sudoku g = new Sudoku();
 			
 			int[][] grid = new int[][] {{0, 0, 0, 0, 0, 0, 0, 0, 0},
 										{0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -223,7 +229,7 @@ public class Sudoku {
 			g.solveSudoku(grid);					//Solves the grid using backtracking created above.
 			g.sudokuGenerator(grid, difficulty);	//Removes some elements from the completely solved grid, such that the sudoku always results in an unique solution.
 			
-			JFrame frame = new JFrame("Sudoku Prototype");	//Creates a new JFrame with the title "Sudoku Prototype".
+			
 			JPanel p = new JPanel();						//Creates a JPanel, on which we will add all our components.
 			JTextField[] box = new JTextField[81];			//81 JTextField's, one for each element. 
 			
@@ -346,11 +352,20 @@ public class Sudoku {
 					if( res==0 )
 					{
 						if( button==d3 )
+						{
+							p.repaint();
 							GUI(1);
+						}
 						else if( button==d2 )
+						{
+							p.repaint();
 							GUI(2);
+						}
 						else
+						{
+							p.repaint();
 							GUI(3);
+						}
 					}
 				}
 			};
